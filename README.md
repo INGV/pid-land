@@ -1,1 +1,199 @@
-# pid-land
+# PID-LAND
+
+## Overview
+
+PID-LAND is a **PID-centric resolver and landing service** designed to provide persistent, FAIR, and provenance-aware access to seismological waveform data.
+
+At its core, PID-LAND adopts an **information-centric architecture**: a Persistent Identifier (PID) does **not** identify a file, a URL, or a backend service, but a **conceptual digital object**. This conceptual object represents the scientific meaning of the data—independent of how, where, or in which format the data are stored.
+
+From a single PID, multiple **representations** of the same object can be resolved in a controlled and coherent way, including data, metadata, provenance records, and aggregated dataset views.
+
+---
+
+## Conceptual Digital Objects
+
+In PID-LAND, a **conceptual digital object** is a logical entity that represents a waveform dataset as a scientific object, rather than as a physical file.
+
+A conceptual digital object:
+
+* exists independently of storage layout or delivery mechanisms
+* remains stable across file migrations, format changes, or infrastructure evolution
+* can be resolved into different representations depending on the user or machine request
+
+This distinction between *what the object is* and *how it is materialized* is fundamental to long-term persistence, interoperability, and reproducibility.
+
+> **A PID identifies the concept; representations are views of that concept.**
+
+---
+
+## Resolver Architecture
+
+### Single Resolver Endpoint
+
+PID-LAND exposes a **single, stable resolver endpoint**:
+
+```
+https://hdl.handle.net/<prefix>/<pid>
+```
+
+The PID (`<prefix>/<pid>`) always refers to the same conceptual digital object. It never encodes:
+
+* file paths
+* storage locations
+* backend services
+* access protocols
+
+Instead, **resolution-time parameters** are used to request specific representations of the object.
+
+---
+
+### Resolver Contract and Representations
+
+PID-LAND implements a clear **resolver contract**: different representations are obtained by specifying the requested view through the `urlappend` parameter.
+
+| Resolution request                     | Resulting representation                      |
+| -------------------------------------- | --------------------------------------------- |
+| `<prefix>/<pid>`                       | Default view (latest dataset state)           |
+| `<prefix>/<pid>?urlappend=metadata`    | WF Handle metadata (JSON-LD)                  |
+| `<prefix>/<pid>?urlappend=provenance`  | WF Provenance record (JSON-LD)                |
+| `<prefix>/<pid>?urlappend=version=<n>` | Specific historical version                   |
+| `<prefix>/wf-search?...`               | Aggregated dataset (WF-Manifest, RO-Crate)    |
+| `<prefix>/wf-select?...`               | Deterministic dataset (WF-Manifest, RO-Crate) |
+
+All views are resolved from the **same identifier**, ensuring semantic coherence between data, metadata, and provenance.
+
+---
+
+## Information-Centric Design Rationale
+
+Traditional data services often follow a **system-centric approach**, where identifiers are tied to specific services, access URLs, or storage structures. This typically leads to fragmented identifiers and weak long-term persistence.
+
+PID-LAND deliberately follows an **information-centric approach**, where the PID is the stable reference and systems and services are interchangeable. Representations can evolve without breaking identifiers.
+
+This design aligns with established PID infrastructures (Handle, DOI) and extends them toward **FAIR Digital Objects**.
+
+---
+
+## Special PIDs: Queries as Persistent Objects
+
+PID-LAND introduces the concept of **Special PIDs**, extending persistent identification beyond static datasets.
+
+A **Special PID** identifies a **conceptual dataset defined by a query**, rather than by a pre-existing file.
+
+In this model:
+
+* the selection logic defines the object
+* the PID identifies that logic
+* resolution materializes a dataset view
+
+> **The query itself becomes a persistent, citable object.**
+
+Special PIDs are **not API calls**. They are persistent identifiers whose resolution produces a reproducible dataset derived from well-defined criteria.
+
+---
+
+### Conceptual Model of a Special PID
+
+A Special PID:
+
+* represents a stable conceptual dataset
+* resolves through the same PID-LAND endpoint
+* produces a materialized dataset view
+* maintains explicit links to WF Handle metadata and WF Provenance records
+* remains machine-actionable and FAIR-compliant
+
+Although resolution is dynamic, the identified object is **conceptually stable**.
+
+Future extensions may include extraction timestamps or version anchors, enabling byte-level reproducibility.
+
+---
+
+## WF-Manifest: Materialized Dataset Views
+
+When a Special PID is resolved, PID-LAND generates a **WF-Manifest**, a structured dataset representation encoded as an **RO-Crate JSON-LD**.
+
+The WF-Manifest:
+
+* represents the output of a query-defined conceptual object
+* aggregates waveform files as `MediaObject` entities
+* links each file to its metadata and provenance
+* is fully machine-actionable and FAIR-compliant
+
+WF-Manifest is **not a separate service**, but the natural consequence of resolving a Special PID.
+
+---
+
+## View Selection via `urlappend`
+
+All representations—static or query-derived—are selected using the same resolution mechanism:
+
+```
+<prefix>/<pid>?urlappend=<view>
+```
+
+Supported views include:
+
+* `metadata` → WF Handle
+* `provenance` → WF Provenance
+* `data` → waveform files
+* `search` → WF-Manifest (RO-Crate)
+* `select` → WF-Manifest (RO-Crate)
+
+This uniform contract ensures that identifier semantics remain stable while representations evolve.
+
+---
+
+## Reproducibility and Temporal Resolution
+
+By default, resolving a PID returns the **latest available state** of the conceptual object.
+
+The architecture is explicitly designed to support temporal resolution:
+
+```
+PID + parameters + extraction time
+→ historical dataset snapshot
+```
+
+This enables reproducible science, stable citation of dynamic datasets, and interpretation of past resolutions.
+
+---
+
+## Machine-Actionable by Design
+
+All resolver outputs are:
+
+* encoded in **JSON-LD**
+* validated with **JSON Schema**
+* constrained using **SHACL**
+
+This guarantees structural validity, semantic consistency, and seamless automation across workflows.
+
+---
+
+## Examples
+
+### WF-Search: Spatial and Temporal Selection
+
+```
+https://hdl.handle.net/11099/wf-search?urlappend=search&lat=40.7867&lon=15.9427&rad=10&start=2024-04-09&end=2024-04-10
+```
+
+Resolves to an aggregated RO-Crate manifest describing all matching waveform objects.
+
+Typical use cases include regional discovery, event-based analysis, and automated data packaging.
+
+---
+
+### WF-Select: Deterministic Waveform Selection
+
+```
+https://hdl.handle.net/11099/wf-select?urlappend=select&net=IV&sta=ACER&cha=HNE&start=2024-04-08&end=2024-04-10
+```
+
+Resolves to a deterministic dataset view, suitable for reproducible scientific workflows.
+
+---
+
+## Summary
+
+PID-LAND demonstrates how persistent identifiers can act as stable entry points to **conceptual digital objects**, enabling multiple coherent representations, query-defined persistent datasets, and provenance-aware, machine-actionable access. All of this is achieved without exposing internal storage, backend services, or infrastructure details, making PID-LAND robust and portable across ecosystems.

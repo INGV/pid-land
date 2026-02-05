@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/INGV/wf-provenance/main/json/wf-provenance.schema.v1.1.json",
+  "allOf": [
+    {"$ref": "wf-provenance.schema.json"}
+  ],
+  "description": "WF Provenance schema v1.1 (backward compatible)"
+}

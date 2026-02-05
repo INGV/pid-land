@@ -1,0 +1,40 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix wf: <https://w3id.org/ingv/workflow#> .
+
+wf:WFSelectRequestShape
+    a sh:NodeShape ;
+    sh:targetClass wf:WFSelectRequest ;
+
+    sh:property [
+        sh:path wf:network ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:pattern "^[A-Z0-9]{2}$" ;
+    ] ;
+
+    sh:property [
+        sh:path wf:station ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:pattern "^[A-Z0-9]{4,5}$" ;
+    ] ;
+
+    sh:property [
+        sh:path wf:location ;
+        sh:datatype xsd:string ;
+        sh:minCount 0 ;
+    ] ;
+
+    sh:property [
+        sh:path wf:channel ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:pattern "^(B[HL][ZEN]|HH[ZEN]|EH[ZEN]|LH[ZEN]|VM[EN]|HN[ZEN]|MDI|LKI)$" ;
+    ] ;
+
+    sh:property [
+        sh:path wf:temporal ;
+        sh:node wf:TemporalCoverageShape ;
+        sh:minCount 1 ;
+    ] .

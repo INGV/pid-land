@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WF Manifest Output",
+  "type": "object",
+  "required": ["@context", "@graph"],
+  "properties": {
+    "@context": {
+      "type": "string",
+      "format": "uri"
+    },
+    "@graph": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "required": ["@id", "@type", "name", "hasPart"],
+            "properties": {
+              "@id": { "type": "string" },
+              "@type": { "type": "string" },
+              "name": { "type": "string" },
+              "hasPart": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["@id"],
+                  "properties": {
+                    "@id": { "type": "string" }
+                  }
+                }
+              }
+            },
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "required": ["@id", "@type", "about"],
+            "properties": {
+              "@id": { "type": "string" },
+              "@type": { "type": "string" },
+              "about": { "type": "object" }
+            },
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "required": ["@id", "@type", "encodingFormat"],
+            "properties": {
+              "@id": { "type": "string" },
+              "@type": { "type": "string" },
+              "encodingFormat": { "type": "string" }
+            },
+            "additionalProperties": true
+          }
+        ]
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/INGV/wf-select/schema/json/wf-select-input.schema.json",
+  "title": "WF Select Input Schema",
+  "description": "Schema for WF Select request parameters",
+  "type": "object",
+  "properties": {
+    "@type": {"type": "string", "enum": ["WFSelectRequest"]},
+    "network": {"type": "string", "pattern": "^[A-Z0-9]{2}$"},
+    "station": {"type": "string", "pattern": "^[A-Z0-9]{4,5}$"},
+    "location": {
+      "type": ["string", "null"],
+      "description": "FDSN location code (optional)"
+      },
+    "channel": {
+      "type": "string",
+      "pattern": "^(B[HL][ZEN]|HH[ZEN]|EH[ZEN]|LH[ZEN]|VM[EN]|HN[ZEN]|MDI|LKI)$"
+    },
+    "temporal": {
+      "type": "object",
+      "properties": {
+        "start": {"type": "string", "format": "date"},
+        "end": {"type": "string", "format": "date"}
+      },
+      "required": ["start", "end"]
+    }
+  },
+  "required": ["@type", "network", "station", "channel", "temporal"],
+  "additionalProperties": false
+}

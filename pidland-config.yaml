@@ -1,0 +1,63 @@
+#============
+# LEGAL-INFO
+#============
+# Disclaimer:
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    any later version.
+#    This script is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY.
+#
+# Copyright: 2025 Massimo Fares, INGV - Italy <massimo.fares@ingv.it>; EIDA Italia Team, INGV - Italy  <adaisacd.ont@ingv.it>
+# License: GPLv3
+# Platform: Linux
+# Author: Massimo Fares, INGV - Italy <massimo.fares@ingv.it>
+
+# -----------------------------
+# PID Resolver - Configuration
+# -----------------------------
+
+# Logging
+LOG_DIR: "./log"                  # directory for logs
+LOG_FILE: "pid_land.log"          # base log filename
+LOG_LEVEL: "INFO"                 # DEBUG | INFO | WARNING | ERROR | CRITICAL
+
+# MongoDB configuration
+MONGO:
+  HOST: "www.example.com"
+  PORT: 27017
+  AUTHENTICATE: false
+  USER: ""                        # optional if authentication required
+  PASSWORD: ""                    # optional if authentication required
+PROVENANCE:
+  DB_NAME: wf_prov
+METADATA:
+  DB_NAME: wf_hand
+
+# SDS Archives
+PROD_ARCHIVE: "/var/lib/archive/trust" # base path for latest digital objects
+VERS_ARCHIVE: "/var/lib/archive/version" # base path for versioned objects
+
+# Validation Schemas
+WF_SEARCH_JSON_SCHEMA : "schema/json/wf-search-input.schema.json"
+WF_SEARCH_SHACL : "schema/shacl/wf-search-input.shacl.ttl"
+WF_SELECT_JSON_SCHEMA : "schema/json/wf-select-input.schema.json"
+WF_SELECT_SHACL : "schema/shacl/wf-select-input.shacl.ttl"
+WF_MANIFEST_JSON_SCHEMA : "schema/json/wf-manifest-output.schema.json"
+WF_MANIFEST_SHACL : "schema/shacl/wf-manifest-output.shacl.ttl"
+
+# Service parameters
+HTTP_PORT: 8888                           # Tornado listening port
+MAX_WORKERS: 4                            # max concurrent requests (if needed)
+
+# Optional retry/timeouts (future use)
+# HTTP_TIMEOUT_SEC: 10
+
+# Optional: email notifications (future use)
+EMAIL:
+  ENABLED: false
+  TO: "alerts@example.com"
+
+MESSAGE_DOCUMENT : "TThe miniSEED format is a compact standard for seismic waveform time series defined by the FDSN. It encodes numerical samples representing ground motion (e.g., velocity or acceleration) captured by seismic sensors. To fully interpret miniSEED data — e.g., understand which sensor recorded it and the physical units involved — the accompanying StationXML metadata is required. In common acquisition workflows, waveform streams are generated and transmitted via the SeedLink protocol. Users can read, manipulate, and visualize miniSEED files with tools such as the Python library ObsPy.
+In the PID-LAND service, requests with urlappend=metadata or urlappend=provenance provide all necessary references to access waveform data, descriptive metadata, and StationXML information. Notably, the provenance response contains the direct URL to the StationXML service related to miniSEED file, enabling complete reproducibility and downstream analysis."

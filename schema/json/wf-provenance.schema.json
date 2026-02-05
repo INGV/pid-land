@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/INGV/wf-provenance/main/json/wf-provenance.schema.json",
+  "title": "WF Provenance",
+  "description": "Workflow Provenance schema for waveform data",
+  "type": "object",
+  "required": ["@context", "@type", "dc:identifier", "prov:wasRevisionOf"],
+  "properties": {
+    "@context": {
+      "type": "object",
+      "required": ["dc", "dcterms", "prov", "schema"],
+      "properties": {
+        "dc": {"type": "string", "format": "uri"},
+        "dcterms": {"type": "string", "format": "uri"},
+        "prov": {"type": "string", "format": "uri"},
+        "schema": {"type": "string", "format": "uri"}
+      },
+      "additionalProperties": false
+    },
+    "@type": {
+      "const": "WF Provenance"
+    },
+    "dc:identifier": {
+      "type": "string"
+    },
+    "dcterms:isPartOf": {
+      "type": "string"
+    },
+    "prov:generatedAtTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "prov:wasAttributedTo": {
+      "type": "string"
+    },
+    "prov:usage": {
+      "type": "object",
+      "properties": {
+        "schema:SoftwareApplication": {
+          "type": "array",
+          "items": {"type": "string", "format": "uri"}
+        }
+      },
+      "additionalProperties": false
+    },
+    "prov:wasRevisionOf": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/revision"}
+    }
+  },
+  "$defs": {
+    "revision": {
+      "type": "object",
+      "required": ["dc:hasVersion", "schema:file", "prov:wasGeneratedBy"],
+      "properties": {
+        "dc:hasVersion": {"type": "integer"},
+        "schema:startDate": {"type": "string", "format": "date-time"},
+        "schema:Organization": {"type": "string"},
+        "prov:SoftwareAgent": {
+          "type": "array",
+          "items": {"type": "string", "format": "uri"}
+        },
+        "dcterms:spatial": {
+          "type": "object",
+          "required": ["x", "y", "z"],
+          "properties": {
+            "x": {"type": "number"},
+            "y": {"type": "number"},
+            "z": {"type": "number"}
+          },
+          "additionalProperties": false
+        },
+        "schema:file": {
+          "type": "object",
+          "required": ["name", "position"],
+          "properties": {
+            "name": {"type": "string"},
+            "position": {"type": "string", "format": "uri"}
+          },
+          "additionalProperties": false
+        },
+        "prov:wasGeneratedBy": {
+          "type": "object",
+          "required": ["prov:hadPrimarySource"],
+          "properties": {
+            "prov:hadPrimarySource": {"type": "string", "format": "uri"},
+            "schema:SoftwareApplication": {
+              "type": "array",
+              "items": {"type": "string", "format": "uri"}
+            },
+            "schema:Organization": {"type": "string"},
+            "dcterms:accrualPeriodicity": {"type": "string"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,21 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix schema: <http://schema.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# WF Manifest SHACL
+
+# Dataset must have at least one hasPart
+[] a sh:NodeShape ;
+   sh:targetClass schema:Dataset ;
+   sh:property [
+       sh:path schema:hasPart ;
+       # sh:minCount 1 ;
+   ] .
+
+# CreativeWork must describe something
+[] a sh:NodeShape ;
+   sh:targetClass schema:CreativeWork ;
+   sh:property [
+       sh:path schema:about ;
+       sh:minCount 1 ;
+   ] .

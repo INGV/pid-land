@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/INGV/wf-handle/main/json/wf-handle.schema.json",
+  "title": "WF Handle Schema",
+  "description": "Schema for WF Handle JSON metadata",
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "object",
+      "properties": {
+        "dc": {"type": "string"},
+        "dcterms": {"type": "string"},
+        "schema": {"type": "string"},
+        "file": {"type": "string"}
+      },
+      "required": ["dc", "dcterms", "schema", "file"]
+    },
+    "@type": {"type": "string", "enum": ["WF Handle"]},
+    "dc:identifier": {"type": "string"},
+    "dc:creator": {"type": "string"},
+    "dc:date": {"type": "string", "format": "date-time"},
+    "dc:format": {"type": "string"},
+    "dc:publisher": {"type": "string"},
+    "dc:rights": {"type": "string"},
+    "dc:subject": {"type": "string"},
+    "dc:title": {"type": "string"},
+    "dc:type": {"type": "string"},
+    "dc:hasVersion": {"type": "string"},
+    "dc:description": {"type": "string"},
+    "dc:provenance": {"type": "string"},
+    "dcterms:temporal": {
+      "type": "object",
+      "properties": {
+        "dcterms:start": {"type": "string", "format": "date-time"},
+        "dcterms:end": {"type": "string", "format": "date-time"}
+      },
+      "required": ["dcterms:start", "dcterms:end"]
+    },
+    "dcterms:spatial": {
+      "type": "object",
+      "properties": {
+        "schema:latitude": {"type": "number"},
+        "schema:longitude": {"type": "number"},
+        "schema:altitude": {"type": "number"}
+      },
+      "required": ["schema:latitude", "schema:longitude", "schema:altitude"]
+    },
+    "dcterms:available": {"type": "string", "format": "date-time"},
+    "dcterms:dateAccepted": {"type": "string", "format": "date-time"},
+    "dcterms:isPartOf": {"type": "string"},
+    "file": {
+      "type": "object",
+      "properties": {
+        "schema:name": {"type": "string"},
+        "schema:url": {"type": "string", "format": "uri"}
+      },
+      "required": ["schema:name", "schema:url"]
+    }
+  },
+  "required": ["@context", "@type", "dc:identifier", "dc:creator", "dc:date", "dc:format",
+               "dc:publisher", "dc:rights", "dc:title", "dc:type", "dc:hasVersion", "dc:description",
+               "dc:provenance", "dcterms:temporal", "dcterms:spatial", "dcterms:available",
+               "dcterms:dateAccepted", "dcterms:isPartOf", "file"],
+  "additionalProperties": false
+}
