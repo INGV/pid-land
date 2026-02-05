@@ -43,20 +43,40 @@ The PID (`<prefix>/<pid>`) always refers to the same conceptual digital object. 
 * backend services
 * access protocols
 
-Instead, **resolution-time parameters** are used to request specific representations of the object.
+Instead, **resolution parameters** are used to request specific representations of the object.
+
+### Information-Centric Design Rationale
+
+Traditional data services often adopt a **system-centric** approach, where identifiers are tightly coupled to specific services, storage locations, or representations. This typically leads to:
+
+* Different URLs for data, metadata, and provenance
+* Fragmentation of identifiers
+* Reduced long-term persistence and interoperability
+
+PID-LAND deliberately follows an **information-centric approach**, 
+where the PID is the stable reference and systems and services are interchangeable. 
+Representations can evolve without breaking identifiers and independent of:
+
+* Storage backends
+* File paths
+* Software components
+* Representation formats
+
+This design aligns with established PID infrastructures (Handle, DOI) and extends them toward **FAIR Digital Objects**.
 
 ---
 
-### Resolver Contract and Representations
+## Resolver Contract and Representations
 
 PID-LAND implements a clear **resolver contract**: different representations are obtained by specifying the requested view through the `urlappend` parameter.
 
 | Resolution request                     | Resulting representation                      |
-| -------------------------------------- | --------------------------------------------- |
-| `<prefix>/<pid>`                       | Default view (latest dataset state)           |
+|----------------------------------------|-----------------------------------------------|
+| `<prefix>/<pid>`                       | Default view (latest dataset state) (MSEED)   |
 | `<prefix>/<pid>?urlappend=metadata`    | WF Handle metadata (JSON-LD)                  |
 | `<prefix>/<pid>?urlappend=provenance`  | WF Provenance record (JSON-LD)                |
-| `<prefix>/<pid>?urlappend=version=<n>` | Specific historical version                   |
+| `<prefix>/<pid>?urlappend=version=<n>` | Specific historical version  (MSEED)          |
+| `<prefix>/<pid>?urlappend=document`    | Human readble documentation  (TXT)       |
 | `<prefix>/wf-search?...`               | Aggregated dataset (WF-Manifest, RO-Crate)    |
 | `<prefix>/wf-select?...`               | Deterministic dataset (WF-Manifest, RO-Crate) |
 
@@ -64,13 +84,71 @@ All views are resolved from the **same identifier**, ensuring semantic coherence
 
 ---
 
-## Information-Centric Design Rationale
 
-Traditional data services often follow a **system-centric approach**, where identifiers are tied to specific services, access URLs, or storage structures. This typically leads to fragmented identifiers and weak long-term persistence.
+## View Selection via `urlappend`
 
-PID-LAND deliberately follows an **information-centric approach**, where the PID is the stable reference and systems and services are interchangeable. Representations can evolve without breaking identifiers.
+All representations—static or query-derived are selected using the same resolution mechanism:
 
-This design aligns with established PID infrastructures (Handle, DOI) and extends them toward **FAIR Digital Objects**.
+```
+<prefix>/<pid>?urlappend=<view>
+```
+
+Supported views include:
+
+* `metadata` → WF Handle
+* `provenance` → WF Provenance
+* `data` → waveform files (default)
+* `document` → readable documentation
+
+special pid
+* `search` → WF-Manifest 
+* `select` → WF-Manifest 
+
+This uniform contract ensures that identifier semantics remain stable while representations evolve.
+
+---
+
+### WF-Handle: what the data is
+
+**WF Handle** is a **JSON Schema** designed to describe **Information-centric metadata**
+for waveform digital objects.
+
+It represents the **information core** of the PID-LAND architecture and provides
+a **machine-actionable, FAIR-compliant description** of waveform digital objects,
+independently of storage systems or delivery services.
+
+WF Handle focuses on **what the data is**, while complementary schemas
+**WF Provenance** describe **how the data was produced**.
+
+---
+
+### WF-Provenance: how the data was generated
+
+**WF Provenance** is a **JSON Schema** designed to describe **workflow-level provenance information**
+for waveform digital objects.
+
+It is a core component of the **PID-LAND** ecosystem and complements the
+**WF Handle** schema by providing a structured, machine-actionable description of
+**data lineage, versioning, and processing history**.
+
+The schema is intended for **public use**, **automatic validation**, and
+**long-term traceability** of waveform digital objects.
+
+---
+
+
+### Data: binary payload
+
+In the seismological domain, the data component typically consists of timestamped 
+ground motion samples stored in **miniSEED** (mSEED) **format**, a widely recognized 
+standard within the International Federation of Digital Seismograph Networks (FDSN).
+
+---
+
+
+### Document: plain text data description
+
+A human readable description of data ,specially of **miniSEED** the current data format used.
 
 ---
 
@@ -108,7 +186,8 @@ Future extensions may include extraction timestamps or version anchors, enabling
 
 ---
 
-## WF-Manifest: Materialized Dataset Views
+
+### WF-Manifest: Materialized Dataset Views
 
 When a Special PID is resolved, PID-LAND generates a **WF-Manifest**, a structured dataset representation encoded as an **RO-Crate JSON-LD**.
 
@@ -123,40 +202,6 @@ WF-Manifest is **not a separate service**, but the natural consequence of resolv
 
 ---
 
-## View Selection via `urlappend`
-
-All representations—static or query-derived—are selected using the same resolution mechanism:
-
-```
-<prefix>/<pid>?urlappend=<view>
-```
-
-Supported views include:
-
-* `metadata` → WF Handle
-* `provenance` → WF Provenance
-* `data` → waveform files
-* `search` → WF-Manifest (RO-Crate)
-* `select` → WF-Manifest (RO-Crate)
-
-This uniform contract ensures that identifier semantics remain stable while representations evolve.
-
----
-
-## Reproducibility and Temporal Resolution
-
-By default, resolving a PID returns the **latest available state** of the conceptual object.
-
-The architecture is explicitly designed to support temporal resolution:
-
-```
-PID + parameters + extraction time
-→ historical dataset snapshot
-```
-
-This enables reproducible science, stable citation of dynamic datasets, and interpretation of past resolutions.
-
----
 
 ## Machine-Actionable by Design
 
