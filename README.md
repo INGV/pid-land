@@ -29,22 +29,43 @@ This distinction between *what the object is* and *how it is materialized* is fu
 ## Resolver Architecture
 
 ### Single Resolver Endpoint
+PID-LAND exposes a single, stable **public resolver endpoint**:
 
-PID-LAND exposes a **single, stable resolver endpoint**:
 
 ```
 https://hdl.handle.net/<prefix>/<pid>
 ```
 
-The PID (`<prefix>/<pid>`) always refers to the same conceptual digital object. It never encodes:
 
-* file paths
-* storage locations
-* backend services
-* access protocols
+The PID (`<prefix>/<pid>`) always refers to the same **conceptual digital object**. It never encodes:
 
-Instead, **resolution parameters** are used to request specific representations of the object.
 
+- file paths
+- storage locations
+- backend services
+- access protocols
+
+
+### Public vs. Project Endpoint
+
+
+While `hdl.handle.net` provides a **universal, public entry point**, all actual data and services are hosted on the project infrastructure (e.g., `https://my-resolver.net`).
+
+
+The PID manager stores the mapping between the PID and the internal project URL. When a user resolves the PID via `hdl.handle.net`, the resolver performs a **redirect to the project-specific endpoint**:
+
+
+```
+User -> https://hdl.handle.net/<prefix>/<pid> -> PID-LAND resolver -> redirect -> https://my-resolver.net/<prefix>/<pid>
+```
+
+
+This approach ensures:
+
+
+- The PID remains **persistent and stable**.
+- The underlying storage, service, or protocol can change without breaking the PID.
+- Users always access the **conceptual digital object** without needing to know internal infrastructure details.
 ### Information-Centric Design Rationale
 
 Traditional data services often adopt a **system-centric** approach, where identifiers are tightly coupled to specific services, storage locations, or representations. This typically leads to:
