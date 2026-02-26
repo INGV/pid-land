@@ -94,12 +94,12 @@ PID-LAND implements a clear **resolver contract**: different representations are
 | Resolution request                     | Resulting representation                      |
 |----------------------------------------|-----------------------------------------------|
 | `<prefix>/<pid>`                       | Default view (latest dataset state) (MSEED)   |
-| `<prefix>/<pid>?urlappend=metadata`    | WF Handle metadata (JSON-LD)                  |
-| `<prefix>/<pid>?urlappend=provenance`  | WF Provenance record (JSON-LD)                |
-| `<prefix>/<pid>?urlappend=version=<n>` | Specific historical version  (MSEED)          |
-| `<prefix>/<pid>?urlappend=document`    | Human readble documentation  (TXT)       |
-| `<prefix>/wf-search?...`               | Aggregated dataset (WF-Manifest, RO-Crate)    |
-| `<prefix>/wf-select?...`               | Deterministic dataset (WF-Manifest, RO-Crate) |
+| `<prefix>/<pid>?urlappend=?q=metadata` | WF Handle metadata (JSON-LD)                  |
+| `<prefix>/<pid>?urlappend=?q=provenance`  | WF Provenance record (JSON-LD)                |
+| `<prefix>/<pid>?urlappend=?q=version=<n>` | Specific historical version  (MSEED)          |
+| `<prefix>/<pid>?urlappend=?q=document`    | Human readble documentation  (TXT)       |
+| `<prefix>/wf-search?urlappend=?q=...`               | Aggregated dataset (WF-Manifest, RO-Crate)    |
+| `<prefix>/wf-select?urlappend=?q=...`               | Deterministic dataset (WF-Manifest, RO-Crate) |
 
 All views are resolved from the **same identifier**, ensuring semantic coherence between data, metadata, and provenance.
 
@@ -141,6 +141,13 @@ independently of storage systems or delivery services.
 WF Handle focuses on **what the data is**, while complementary schemas
 **WF Provenance** describe **how the data was produced**.
 
+Repository: https://github.com/INGV/wf-handle
+
+#### Example:
+```
+https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004?urlappend=?q=metadata
+```
+
 ---
 
 ### WF-Provenance: how the data was generated
@@ -155,6 +162,14 @@ It is a core component of the **PID-LAND** ecosystem and complements the
 The schema is intended for **public use**, **automatic validation**, and
 **long-term traceability** of waveform digital objects.
 
+Repository: https://github.com/INGV/wf-provenance
+
+
+#### Example:
+```
+https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004?urlappend=?q=provenance
+```
+
 ---
 
 
@@ -164,12 +179,24 @@ In the seismological domain, the data component typically consists of timestampe
 ground motion samples stored in **miniSEED** (mSEED) **format**, a widely recognized 
 standard within the International Federation of Digital Seismograph Networks (FDSN).
 
+
+#### Example:
+```
+https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004
+```
+
 ---
 
 
 ### Document: plain text data description
 
 A human readable description of data ,specially of **miniSEED** the current data format used.
+
+
+#### Example:
+```
+https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004?urlappend=?q=document
+```
 
 ---
 
@@ -221,6 +248,8 @@ The WF-Manifest:
 
 WF-Manifest is **not a separate service**, but the natural consequence of resolving a Special PID.
 
+Repository: https://github.com/INGV/wf-manifest
+
 ---
 
 
@@ -241,7 +270,7 @@ This guarantees structural validity, semantic consistency, and seamless automati
 ### WF-Search: Spatial and Temporal Selection
 
 ```
-https://hdl.handle.net/11099/wf-search?urlappend=search&lat=40.7867&lon=15.9427&rad=10&start=2024-04-09&end=2024-04-10
+https://hdl.handle.net/11099/wf-search?urlappend=?q=/lat/40.7867/lon/15.9427/rad/10/start/2024-04-09/end/2024-04-10
 ```
 
 Resolves to an aggregated RO-Crate manifest describing all matching waveform objects.
@@ -253,7 +282,7 @@ Typical use cases include regional discovery, event-based analysis, and automate
 ### WF-Select: Deterministic Waveform Selection
 
 ```
-https://hdl.handle.net/11099/wf-select?urlappend=select&net=IV&sta=ACER&cha=HNE&start=2024-04-08&end=2024-04-10
+https://hdl.handle.net/11099/wf-select?urlappend=?q=/net/IV/sta/ACER/loc//cha/HNE/start/2024-04-08/end/2024-04-10
 ```
 
 Resolves to a deterministic dataset view, suitable for reproducible scientific workflows.
