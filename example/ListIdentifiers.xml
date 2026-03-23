@@ -1,0 +1,57 @@
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/">
+  <ListIdentifiers>
+
+    <header>
+      <identifier>oai:ingv:11099/dad5093a-aa49-11ee-930d-0242ac120007</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/dc9cb916-aa49-11ee-88b7-0242ac120008</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/dc15116e-aa49-11ee-ad7c-0242ac120009</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/dc430056-aa49-11ee-9ec8-0242ac12000b</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/dca935ec-aa49-11ee-82f5-0242ac12000a</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/dda9e554-aa49-11ee-9277-0242ac12000c</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/de50a0d8-aa49-11ee-963b-0242ac12000d</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/df55b1c6-aa49-11ee-9922-0242ac12000f</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/deefad7c-aa49-11ee-8a08-0242ac12000e</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <header>
+      <identifier>oai:ingv:11099/e086aa50-aa49-11ee-930d-0242ac120007</identifier>
+      <datestamp>2024-01-03</datestamp>
+    </header>
+
+    <resumptionToken>10</resumptionToken>
+
+  </ListIdentifiers>
+</OAI-PMH>

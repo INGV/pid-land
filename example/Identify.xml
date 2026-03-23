@@ -1,0 +1,27 @@
+<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
+     xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <Identify>
+        <repositoryName>INGV EIDA NODE</repositoryName>
+        <baseURL>https://repo.data.ingv.it/oai</baseURL>
+        <protocolVersion>2.0</protocolVersion>
+        <adminEmail>adaisacd.ont@ingv.it</adminEmail>
+        <earliestDatestamp>2024-01-01</earliestDatestamp>
+        <deletedRecord>no</deletedRecord>
+        <granularity>YYYY-MM-DD</granularity>
+        <description>
+          <text>
+            INGV EIDA NODE (via INGV PID-LAND) provides access to FAIR Digital Objects (FDOs) generated via RULE MANAGER (INGV RUM).
+            Each PID can be resolved to retrieve multiple representations:
+
+            - Resolving a PID without any urlappend parameter returns the latest version of the digital object.
+            - Metadata (WF-Handle JSON-LD): append '?urlappend=?q=metadata'
+            - Provenance (WF-Provenance JSON-LD): append '?urlappend=?q=provenance'
+            - Human-readable document: append '?urlappend=?q=document'
+            - Specific version: append '?urlappend=?q=version=0'
+
+            Example: https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004?urlappend=?q=metadata
+          </text>
+        </description>
+      </Identify>
+</OAI-PMH>
