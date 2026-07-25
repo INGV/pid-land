@@ -1,8 +1,13 @@
 # PID-LAND
 
+ <p align="center">
+  <img src="images/PIDLAND-welcome.png" >
+ </p>
+
+> PID LAND represents the Information-Centric Frontier: an ecosystem where Persistent Identifiers resolve to machine-actionable information services rather than merely locating files.
 ## Overview
 
-PID-LAND is a **PID-centric resolver and landing service** designed to provide persistent, FAIR, and provenance-aware access to seismological waveform data.
+PID-LAND is a **PID-centric resolver and landing service** designed to provide persistent, FAIR, and provenance-aware access to scientific (seismological waveform in this case) data.
 
 At its core, PID-LAND adopts an **information-centric architecture**: a Persistent Identifier (PID) does **not** identify a file, a URL, or a backend service, but a **conceptual digital object**. This conceptual object represents the scientific meaning of the data—independent of how, where, or in which format the data are stored.
 
@@ -104,118 +109,7 @@ PID-LAND implements a clear **resolver contract**: different representations are
 All views are resolved from the **same identifier**, ensuring semantic coherence between data, metadata, and provenance.
 
 ---
-## OAI-PMH Interface
 
-PID-LAND exposes FAIR Digital Objects through an **OAI-PMH interface** for scalable metadata harvesting.
-
-### Endpoint
-```
-http://<resolver>/oai?verb=...
-```
-### Supported verbs
-
-- Identify
-- ListIdentifiers
-- ListRecords
-- GetRecord
-- ListMetadataFormats
-
-### Key features
-
-- **Dublin Core metadata (oai_dc)**
-- **resumptionToken pagination**
-- **globally resolvable identifiers (PID-based)**
-- **machine-readable guidance via Identify/description**
-
----
-
-## WF-Handle → OAI-PMH Mapping
-
-OAI-PMH records are a **projection of WF-Handle metadata**, not an independent representation.
-
-Core fields are mapped as follows:
-
-| WF-Handle | OAI_DC |
-|----------|--------|
-| dc:identifier | dc:identifier |
-| dc:title | dc:title |
-| dc:creator | dc:creator |
-| dc:publisher | dc:publisher |
-| dc:subject | dc:subject |
-| dc:date | dc:date |
-| dc:format | dc:format |
-| dc:type | dc:type |
-| dc:rights | dc:rights |
-| version | dc:relation |
-| provenance link | dc:relation |
-| document link | dc:relation |
-| temporal | dc:coverage |
-| spatial | dc:coverage |
-
-### Important design note
-
-OAI-PMH provides a **simplified, interoperable metadata view**, while full representations remain accessible via PID resolution.
-
-Links to advanced representations are exposed through:
-```
-dc:relation → ?urlappend=?q=metadata
-dc:relation → ?urlappend=?q=provenance
-dc:relation → ?urlappend=?q=document
-```
-
-> **OAI-PMH enables discovery; PID-LAND enables full access.**
-
----
-
-### Example: GetRecord
-
-This request
-```
-http://<resolver>/oai?verb=GetRecord&identifier=oai:ingv:<pid>&metadataPrefix=oai_dc
-```
-
-retrieve this
-```
-<record>
-          <header>
-            <identifier>oai:ingv:11099/b89bd40c-aaf3-11ee-ad3c-0242ac120013</identifier>
-            <datestamp>2024-01-04</datestamp>
-          </header>
-          <metadata>
-            <oai_dc:dc xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/">
-              <dc:title>INGV mSEED Repository</dc:title>
-              <dc:creator>INGV ITALY</dc:creator>
-              <dc:publisher>EIDA ITALIA</dc:publisher>
-              <dc:contributor>network operator</dc:contributor>
-              <dc:subject>mSEED, waveform, seismic data</dc:subject>
-              <dc:description>Seismic waveform data managed as FAIR Digital Objects</dc:description>
-              <dc:date>2024-01-04</dc:date>
-              <dc:identifier>https://hdl.handle.net/11099/b89bd40c-aaf3-11ee-ad3c-0242ac120013</dc:identifier>
-              <dc:format>application/vnd.fdsn.mseed</dc:format>
-              <dc:type>Dataset</dc:type>
-              <dc:rights>https://creativecommons.org/publicdomain/zero/1.0/</dc:rights>
-              <!-- version -->
-              <dc:relation>version:0</dc:relation>
-              <!-- metadata -->
-              <dc:relation>
-                https://hdl.handle.net/11099/b89bd40c-aaf3-11ee-ad3c-0242ac120013?urlappend=?q=metadata
-              </dc:relation>
-              <!-- provenance & versions -->
-              <dc:relation>
-                https://hdl.handle.net/11099/b89bd40c-aaf3-11ee-ad3c-0242ac120013?urlappend=?q=provenance
-              </dc:relation>
-              <!-- documentation -->
-              <dc:relation>
-                https://hdl.handle.net/11099/b89bd40c-aaf3-11ee-ad3c-0242ac120013?urlappend=?q=document
-              </dc:relation>
-              <!-- temporal coverage -->
-              <dc:coverage>2024-01-03T00:00:00.000000Z/2024-01-03T23:59:59.990000Z</dc:coverage>
-              <!-- spatial coverage -->
-              <dc:coverage>lat=41.631801 lon=15.90782 alt=30.0</dc:coverage>
-            </oai_dc:dc>
-          </metadata>
-        </record>
-```
 
 ## View Selection via `urlappend`
 
@@ -311,7 +205,7 @@ https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004?urlappend=?q=d
 
 ---
 
-### Special PIDs: Queries as Persistent Objects
+## Special PIDs: Queries as Persistent Objects
 
 PID-LAND introduces the concept of **Special PIDs**, extending persistent identification beyond static datasets.
 
@@ -327,43 +221,28 @@ In this model:
 
 Special PIDs are **not API calls**. They are persistent identifiers whose resolution produces a reproducible dataset derived from well-defined criteria.
 
-Special PIDs represent query-defined datasets.
-```
-https://hdl.handle.net/11099/wf-search?urlappend=?q=/lat/.../lon/.../start/.../end/.../asof/...
-```
-They enable:
-
-* reproducible dataset extraction
-* time-aware queries (asof)
-* persistent identification of dynamic data
-* Machine-Actionable by Design
-
-All outputs are:
-
-* JSON-LD
-* JSON Schema validated
-* SHACL constrained
-
-
 ---
 
-in summary PID-LAND enables:
+### Conceptual Model of a Special PID
 
-* persistent identification of conceptual objects
-* multiple coherent representations
-* scalable metadata harvesting via OAI-PMH
-* reproducible and machine-actionable data access
+A Special PID:
 
-> It bridges discovery (OAI-PMH) and resolution (PID-LAND) in a unified, FAIR-compliant architecture.
+* represents a stable conceptual dataset
+* resolves through the same PID-LAND endpoint
+* produces a materialized dataset view
+* maintains explicit links to WF Handle metadata and WF Provenance records
+* remains machine-actionable and FAIR-compliant
 
+Although resolution is dynamic, the identified object is **conceptually stable**.
+
+Future extensions may include extraction timestamps or version anchors, enabling byte-level reproducibility.
 
 ---
 
 
 ### WF-Manifest: Materialized Dataset Views
 
-When a Special PID is resolved, PID-LAND generates a **WF-Manifest**, a structured dataset representation 
-encoded as an **RO-Crate JSON-LD**.
+When a Special PID is resolved, PID-LAND generates a **WF-Manifest**, a structured dataset representation encoded as an **RO-Crate JSON-LD**.
 
 The WF-Manifest:
 
@@ -396,7 +275,7 @@ This guarantees structural validity, semantic consistency, and seamless automati
 ### WF-Search: Spatial and Temporal Selection
 
 ```
-https://hdl.handle.net/11099/wf-search?urlappend=?q=/lat/40.7867/lon/15.9427/rad/10/start/2024-04-09/end/2024-04-10/asof/2025-01-01
+https://hdl.handle.net/11099/wf-search?urlappend=?q=/lat/40.7867/lon/15.9427/rad/10/start/2024-04-09/end/2024-04-10
 ```
 
 Resolves to an aggregated RO-Crate manifest describing all matching waveform objects.
@@ -408,7 +287,7 @@ Typical use cases include regional discovery, event-based analysis, and automate
 ### WF-Select: Deterministic Waveform Selection
 
 ```
-https://hdl.handle.net/11099/wf-select?urlappend=?q=/net/IV/sta/ACER/loc//cha/HNE/start/2024-04-08/end/2024-04-10/asof/2025-01-01
+https://hdl.handle.net/11099/wf-select?urlappend=?q=/net/IV/sta/ACER/loc//cha/HNE/start/2024-04-08/end/2024-04-10
 ```
 
 Resolves to a deterministic dataset view, suitable for reproducible scientific workflows.
@@ -417,7 +296,4 @@ Resolves to a deterministic dataset view, suitable for reproducible scientific w
 
 ## Summary
 
-PID-LAND demonstrates how persistent identifiers can act as stable entry points to **conceptual digital objects**, 
-enabling multiple coherent representations, query-defined persistent datasets, and provenance-aware, machine-actionable access. 
-All of this is achieved without exposing internal storage, backend services, or infrastructure details, 
-making PID-LAND robust and portable across ecosystems.
+PID-LAND demonstrates how persistent identifiers can act as stable entry points to **conceptual digital objects**, enabling multiple coherent representations, query-defined persistent datasets, and provenance-aware, machine-actionable access. All of this is achieved without exposing internal storage, backend services, or infrastructure details, making PID-LAND robust and portable across ecosystems.
