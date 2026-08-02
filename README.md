@@ -227,9 +227,6 @@ The seismological use case provides a practical example of how PID-LAND operates
 **WF Handle** is a **JSON Schema** designed to describe **Information-centric metadata**
 for waveform digital objects.
 
-It represents the **information core** of the PID-LAND architecture and provides
-a **machine-actionable, FAIR-compliant description** of waveform digital objects,
-independently of storage systems or delivery services.
 
 WF Handle focuses on **what the data is**, while complementary schemas
 **WF Provenance** describe **how the data was produced**.
@@ -247,10 +244,6 @@ https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004?urlappend=?q=m
 
 **WF Provenance** is a **JSON Schema** designed to describe **workflow-level provenance information**
 for waveform digital objects.
-
-It is a core component of the **PID-LAND** ecosystem and complements the
-**WF Handle** schema by providing a structured, machine-actionable description of
-**data lineage, versioning, and processing history**.
 
 The schema is intended for **public use**, **automatic validation**, and
 **long-term traceability** of waveform digital objects.
@@ -384,9 +377,14 @@ Resolves to a deterministic dataset view, suitable for reproducible scientific w
 ---
 ### Independent FAIRness Assessment
 
-To test the architectural and operational evaluation presented here, output PID-LAND objects could be assessed using the F-UJI Automated FAIR Data Assessment Tool available [Here](https://www.f-uji.net)
+To independently assess the architectural and operational approach presented here,
+PID-LAND objects can be evaluated using the F-UJI Automated FAIR Data Assessment Tool,
+available [here](https://www.f-uji.net/?action=test).
 
-Rather than emphasizing the numerical FAIRness score itself, the evaluation demonstrates that Persistent Identifiers within PID-LAND act as machine-actionable entry points to an information ecosystem whose FAIR characteristics can be objectively recognized by an independent assessment framework.
+Simply copy one of the example PIDs above and paste it into the **"Research Data Object (URL/PID)"** field.
+
+Rather than emphasizing the numerical FAIRness score itself,
+this assessment demonstrates that Persistent Identifiers within PID-LAND act as machine-actionable entry points to an information ecosystem whose FAIR characteristics can be objectively recognized by an independent assessment framework.
 
 ---
 
@@ -401,12 +399,12 @@ By separating FAIR Digital Objects from their possible representations, the same
 
 # Internal Architecture
 
-PID-LAND is powered by [**PRISM**](PRISM.md), an Information Representation Engine that separates execution mechanics from domain knowledge through the concepts of **Palette**, **Hue**, and reusable **Modules**.
+PID-LAND is powered by [**PRISM**](), an Information Representation Engine that separates execution mechanics from domain knowledge through the concepts of **Palette**, **Hue**, and reusable **Modules**.
 
 The complete architectural design is described in:
 
-- [**PRISM.md**](PRISM.md) — Representation Engine Architecture
-- [**BICYCLE.md**](https://github.com/INGV/rum-framework/blob/main/BICYCLE.md) — Design Philosophy
+- [**PRISM.md**]() — Representation Engine Architecture
+- [**BICYCLE.md**]() — Design Philosophy
 
 ---
 
