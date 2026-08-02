@@ -4,32 +4,107 @@
   <img src="images/PIDLAND-welcome.png" >
  </p>
 
-> PID LAND represents the Information-Centric Frontier: an ecosystem where Persistent Identifiers resolve to machine-actionable information services rather than merely locating files.
+> PID-LAND represents the visible layer of a FAIR Digital Object-Oriented Data Center (FDO-ODC):
+>
+> an ecosystem where Persistent Identifiers resolve FAIR Digital Objects into machine-actionable information services rather than simply locating digital resources.
+
 ## Overview
 
-PID-LAND is a **PID-centric resolver and landing service** designed to provide persistent, FAIR, and provenance-aware access to scientific (seismological waveform in this case) data.
+PID-LAND is an **Information Representation Engine** that transforms Persistent Identifier resolution into the materialization of **context-aware representations** of FAIR Digital Objects.
 
-At its core, PID-LAND adopts an **information-centric architecture**: a Persistent Identifier (PID) does **not** identify a file, a URL, or a backend service, but a **conceptual digital object**. This conceptual object represents the scientific meaning of the data—independent of how, where, or in which format the data are stored.
+Rather than simply locating digital resources, PID-LAND provides machine-actionable access to multiple coherent representations
+— including metadata, provenance, waveform data, documentation, citable references, and future domain-specific representations — while preserving the identity of the underlying FAIR Digital Object.
 
-From a single PID, multiple **representations** of the same object can be resolved in a controlled and coherent way, including data, metadata, provenance records, and aggregated dataset views.
+Each representation exposes a different view of the same FAIR Digital Object.
 
+The information remains persistent.
+
+Representations are materialized on demand.
+
+> **Note**
+>
+> The repository is currently undergoing an internal architectural refactoring that introduces the concepts described in this document (PRISM, Palette, Hues and Modules).
+>
+> The public interfaces and the underlying concepts remain unchanged; the ongoing work focuses on improving the internal organization of the implementation.
+> 
 ---
 
-## Conceptual Digital Objects
+# From Resolution to Representation
 
-In PID-LAND, a **conceptual digital object** is a logical entity that represents a waveform dataset as a scientific object, rather than as a physical file.
+Traditional PID resolution follows a resource-centric model.
 
-A conceptual digital object:
+```
+PID
+ │
+ ▼
+URL
+ │
+ ▼
+Resource
+```
 
-* exists independently of storage layout or delivery mechanisms
-* remains stable across file migrations, format changes, or infrastructure evolution
-* can be resolved into different representations depending on the user or machine request
+PID-LAND adopts a representation-centric approach.
 
-This distinction between *what the object is* and *how it is materialized* is fundamental to long-term persistence, interoperability, and reproducibility.
+```
+PID
+ │
+ ▼
+FAIR Digital Object
+ │
+ ▼
+PRISM Representation Engine
+ │
+ ├── Metadata
+ ├── Provenance
+ ├── Waveforms
+ ├── Citations
+ ├── Documentation
+ └── Future Representations
+```
 
-> **A PID identifies the concept; representations are views of that concept.**
+A single PID.
+
+Multiple coherent representations.
+
+One FAIR Digital Object.
 
 ---
+# The Representation Engine Approach (_PRISM concept_)
+
+PRISM builds upon the FAIR Digital Object model to explain how a FAIR Digital Object may expose multiple independent representations.
+
+It explains, moreover,  how the information associated with a FAIR Digital Object remains stable while its representations evolve independently.
+
+Within PID-LAND:
+
+- a PID identifies a FAIR Digital Object;
+- the associated information remains persistent;
+- representations are materialized according to the requested context.
+
+Representations may differ in:
+
+- purpose;
+- format;
+- level of abstraction;
+- delivery protocol.
+
+The identity of the FAIR Digital Object never changes.
+
+Only its representations evolve.
+
+
+>  <p align="center">
+>  <img src="images/readme_prism.png" width="600" >
+>  </p>
+>
+> <p align="center">
+>  <b>A PID identifies a FAIR Digital Object.</b>
+> </p>
+> <p align="center">
+> <b>PRISM materializes context-aware representations of FDO.</b>
+> </p>
+---
+
 
 ## Resolver Architecture
 
@@ -42,26 +117,29 @@ https://hdl.handle.net/<prefix>/<pid>
 ```
 
 
-The PID (`<prefix>/<pid>`) always refers to the same **conceptual digital object**. It never encodes:
+The PID (`<prefix>/<pid>`) always identifies the same FAIR Digital Object.
 
+It never encodes:
 
 - file paths
 - storage locations
 - backend services
 - access protocols
+- representation formats
+
 
 
 ### Public vs. Project Endpoint
 
 
-While `hdl.handle.net` provides a **universal, public entry point**, all actual data and services are hosted on the project infrastructure (e.g., `https://my-resolver.net`).
+While `hdl.handle.net` (or other global resolver) provides a **universal, public entry point**, all actual data and services are hosted on the project (local) infrastructure with specific endpoint (e.g., `https://my-resolver.net`).
 
 
-The PID manager stores the mapping between the PID and the internal project URL. When a user resolves the PID via `hdl.handle.net`, the resolver performs a **redirect to the project-specific endpoint**:
+When a user resolves the PID via `hdl.handle.net` (or other global resolver), the resolver performs a **redirect to the project-specific endpoint**:
 
 
 ```
-User -> https://hdl.handle.net/<prefix>/<pid> -> PID-LAND resolver -> redirect -> https://my-resolver.net/<prefix>/<pid>
+User -> https://hdl.handle.net/<prefix>/<pid> -> redirect to -> PID-LAND (local resolver) ->  https://my-resolver.net/<prefix>/<pid>
 ```
 
 
@@ -70,7 +148,10 @@ This approach ensures:
 
 - The PID remains **persistent and stable**.
 - The underlying storage, service, or protocol can change without breaking the PID.
-- Users always access the **conceptual digital object** without needing to know internal infrastructure details.
+- Users always access the **FAIR digital object** without needing to know internal infrastructure details.
+
+---
+
 ### Information-Centric Design Rationale
 
 Traditional data services often adopt a **system-centric** approach, where identifiers are tightly coupled to specific services, storage locations, or representations. This typically leads to:
@@ -131,6 +212,13 @@ special pid
 * `select` → WF-Manifest 
 
 This uniform contract ensures that identifier semantics remain stable while representations evolve.
+
+---
+# Seismological Use Case
+
+---
+
+The seismological use case provides a practical example of how PID-LAND operates.
 
 ---
 
@@ -195,7 +283,7 @@ https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004
 
 ### Document: plain text data description
 
-A human readable description of data ,specially of **miniSEED** the current data format used.
+A human-readable description of the data, particularly the miniSEED format currently used for waveform distribution.
 
 
 #### Example:
@@ -209,7 +297,7 @@ https://hdl.handle.net/11099/be9b7af6-f71f-11ee-aae9-0242ac120004?urlappend=?q=d
 
 PID-LAND introduces the concept of **Special PIDs**, extending persistent identification beyond static datasets.
 
-A **Special PID** identifies a **conceptual dataset defined by a query**, rather than by a pre-existing file.
+A **Special PID** identifies a **query-defined dataset**, rather than by a pre-existing stored object.
 
 In this model:
 
@@ -235,7 +323,8 @@ A Special PID:
 
 Although resolution is dynamic, the identified object is **conceptually stable**.
 
-Future extensions may include extraction timestamps or version anchors, enabling byte-level reproducibility.
+> Using: asof= 'date' 
+> the resolver reconstructs the state of datasets valid at a specific point in time, allowing reproducible retrieval even when underlying datasets evolve.
 
 ---
 
@@ -293,7 +382,40 @@ https://hdl.handle.net/11099/wf-select?urlappend=?q=/net/IV/sta/ACER/loc//cha/HN
 Resolves to a deterministic dataset view, suitable for reproducible scientific workflows.
 
 ---
+### Independent FAIRness Assessment
 
-## Summary
+To test the architectural and operational evaluation presented here, output PID-LAND objects could be assessed using the F-UJI Automated FAIR Data Assessment Tool available [Here](https://www.f-uji.net)
 
-PID-LAND demonstrates how persistent identifiers can act as stable entry points to **conceptual digital objects**, enabling multiple coherent representations, query-defined persistent datasets, and provenance-aware, machine-actionable access. All of this is achieved without exposing internal storage, backend services, or infrastructure details, making PID-LAND robust and portable across ecosystems.
+Rather than emphasizing the numerical FAIRness score itself, the evaluation demonstrates that Persistent Identifiers within PID-LAND act as machine-actionable entry points to an information ecosystem whose FAIR characteristics can be objectively recognized by an independent assessment framework.
+
+---
+
+# Technical Information
+
+PID-LAND demonstrates how Persistent Identifiers can become stable entry points to FAIR Digital Object rather than to individual resources.
+
+By separating FAIR Digital Objects from their possible representations, the same FAIR Digital Object can be materialized through multiple coherent views while remaining independent of storage systems, software components, transport protocols, and evolving technologies.
+
+---
+
+
+# Internal Architecture
+
+PID-LAND is powered by [**PRISM**](PRISM.md), an Information Representation Engine that separates execution mechanics from domain knowledge through the concepts of **Palette**, **Hue**, and reusable **Modules**.
+
+The complete architectural design is described in:
+
+- [**PRISM.md**](PRISM.md) — Representation Engine Architecture
+- [**BICYCLE.md**](https://github.com/INGV/rum-framework/blob/main/BICYCLE.md) — Design Philosophy
+
+---
+
+# Final Principle
+
+FAIR Digital Objects are intended to remain persistent while technologies continue to evolve.
+
+Information is the long-lived asset. Technology is only its current vehicle.
+
+> **Technology changes.**
+>
+> **Information continues the journey.**
