@@ -399,12 +399,12 @@ By separating FAIR Digital Objects from their possible representations, the same
 
 # Internal Architecture
 
-PID-LAND is powered by [**PRISM**](), an Information Representation Engine that separates execution mechanics from domain knowledge through the concepts of **Palette**, **Hue**, and reusable **Modules**.
+PID-LAND is powered by [**PRISM**](PRISM.md), an Information Representation Engine that separates execution mechanics from domain knowledge through the concepts of **Palette**, **Hue**, and reusable **Modules**.
 
 The complete architectural design is described in:
 
-- [**PRISM.md**]() — Representation Engine Architecture
-- [**BICYCLE.md**]() — Design Philosophy
+- [**PRISM.md**](PRISM.md) — Representation Engine Architecture
+- [**BICYCLE.md**](https://github.com/INGV/rum-framework/blob/main/BICYCLE.md) — Design Philosophy
 
 ---
 
