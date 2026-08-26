@@ -298,7 +298,7 @@ Only the Palette evolves.
 
 # Design Principles
 
-PRISM follows the same design philosophy described by the [Bicycle Principle](https://github.com/INGV/rum-framework/blob/main/BICYCLE.md).
+PRISM follows the same design philosophy described by the [Bicycle Principle]().
 
 - One Hue, one representation.
 - Hues orchestrate workflows.

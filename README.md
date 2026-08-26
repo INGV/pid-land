@@ -1,4 +1,15 @@
-# PID-LAND
+# PID-LAND — Representation Engine (RE)
+
+> 🚧 **WORK IN PROGRESS — NOT PRODUCTION**
+>
+> This branch contains the ongoing architectural refactoring of PID-LAND
+> towards an **Information Representation Engine** architecture.
+>
+> The current production implementation remains in the `main` branch.
+>
+> The public interfaces and the underlying PID-LAND concepts remain unchanged.
+> The ongoing work focuses on making explicit the separation between the
+> Representation Engine and the domain-specific Palette.
 
  <p align="center">
   <img src="images/PIDLAND-welcome.png" >

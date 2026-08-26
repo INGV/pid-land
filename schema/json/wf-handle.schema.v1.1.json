@@ -1,8 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/INGV/wf-handle/main/json/wf-handle.schema.v1.1.json",
-  "allOf": [
-    {"$ref": "wf-handle.schema.json"}
-  ],
-  "description": "WF Handle schema v1.1 (backward compatible)"
-}

@@ -23,9 +23,13 @@ LOG_DIR: "./log"                  # directory for logs
 LOG_FILE: "pid_land.log"          # base log filename
 LOG_LEVEL: "INFO"                 # DEBUG | INFO | WARNING | ERROR | CRITICAL
 
+# PID endpoint (DOI/Handle or landing service)
+# PID_ENDPOINT: "http://repo.int.ingv.it/"
+PID_ENDPOINT: "https://hdl.handle.net/"
+
 # MongoDB configuration
 MONGO:
-  HOST: "www.example.com"
+  HOST: "rum-staging.int.ingv.it"
   PORT: 27017
   AUTHENTICATE: false
   USER: ""                        # optional if authentication required
@@ -57,7 +61,17 @@ MAX_WORKERS: 4                            # max concurrent requests (if needed)
 # Optional: email notifications (future use)
 EMAIL:
   ENABLED: false
-  TO: "alerts@example.com"
+  TO: "alerts@ingv.it"
 
-MESSAGE_DOCUMENT : "TThe miniSEED format is a compact standard for seismic waveform time series defined by the FDSN. It encodes numerical samples representing ground motion (e.g., velocity or acceleration) captured by seismic sensors. To fully interpret miniSEED data — e.g., understand which sensor recorded it and the physical units involved — the accompanying StationXML metadata is required. In common acquisition workflows, waveform streams are generated and transmitted via the SeedLink protocol. Users can read, manipulate, and visualize miniSEED files with tools such as the Python library ObsPy.
-In the PID-LAND service, requests with urlappend=metadata or urlappend=provenance provide all necessary references to access waveform data, descriptive metadata, and StationXML information. Notably, the provenance response contains the direct URL to the StationXML service related to miniSEED file, enabling complete reproducibility and downstream analysis."
+MESSAGE_DOCUMENT : "
+The miniSEED format is a compact and widely adopted standard for seismic waveform time series defined by the FDSN. 
+It encodes numerical samples representing ground motion (e.g., velocity or acceleration) recorded by seismic sensors.
+This document describes the data format of the seismic waveform datasets that are accessible through the same PID. 
+In particular, it documents datasets distributed in miniSEED format.
+To fully interpret miniSEED data—such as identifying the recording station, sensor characteristics, and physical units—the corresponding StationXML metadata is required. 
+In typical acquisition workflows, waveform streams are generated and transmitted using the SeedLink protocol.
+Users can read, manipulate, and visualize miniSEED waveform data using established tools, such as the Python library ObsPy.
+Within this service, resolving the PID with urlappend=?q=metadata or urlappend=?q=provenance provides all the necessary references to access waveform datasets, 
+descriptive metadata, and the associated StationXML information. Notably, the provenance response includes the direct URL of the StationXML service 
+related to the described miniSEED datasets, enabling full interpretability, reproducibility, and downstream analysis.
+"

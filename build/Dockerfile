@@ -14,12 +14,11 @@
 # Platform: Linux
 # Author: Massimo Fares, INGV - Italy <massimo.fares@ingv.it>
 
-#---------------------------------------------------------------
-# Dockerized BASE for tornado PID-LAND the INGV PID Landing service
+# Dockerized BASE for tornado PID-LAND - INGV PID Landing service
 # Based on ubuntu:20.04
 #
 # Description:
-# BASE Modules: MONGO and TORNADO in python 3
+# BASE Modules: MONGO, TORNADO in python 3
 #
 # imageName:'base-landing:1.3'
 #

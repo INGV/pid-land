@@ -13,7 +13,6 @@
 # License: GPLv3
 # Platform: Linux
 # Author: Massimo Fares, INGV - Italy <massimo.fares@ingv.it>
-
 version: "3"
 services:
 
@@ -25,12 +24,12 @@ services:
     user: sysop
     tty: true
     restart: unless-stopped
-    command: python3 pid_land.py
+    # command: python3 pid_land.py
     volumes:
-      - /pid_land/:/usr/src/code
-      - /archive/trust:/var/lib/archive/trust
-      - /archive/version:/var/lib/archive/version
-      - /log:/usr/src/code/log   # Tornado logs
+      - /opt/gitwork/pid_land/:/usr/src/code
+      - /mnt/trust-archive/trust:/var/lib/archive/trust
+      - /mnt/trust-archive/version:/var/lib/archive/version
+      - /opt/gitwork/pid_land/log:/usr/src/code/log   # Tornado logs
     ports:
       - 8888:8888
     networks:
@@ -46,8 +45,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /pid_land/build/nginx.conf:/etc/nginx/nginx.conf:ro
-      #- /pid_land/certs:/etc/nginx/certs:ro    # placeholder SSL
+      - /opt/gitwork/pid_land/build/nginx.conf:/etc/nginx/nginx.conf:ro
+      #- /opt/gitwork/pid_land/certs:/etc/nginx/certs:ro    # placeholder SSL
     networks:
       - pid_land
 
